@@ -2,6 +2,7 @@ package redispack
 
 import (
 	"encoding/json"
+	"project/config"
 	"project/internal/model"
 	"time"
 
@@ -10,10 +11,11 @@ import (
 )
 
 func NewRedisClient() *redis.Client {
+	cfg := config.GetConfig()
 	redisDB := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // Redis server address
-		Password: "",               // No password
-		DB:       0,                // Default DB
+		Addr:     cfg.RedisConfig.Addr,     // Redis server address
+		Password: cfg.RedisConfig.Password, // No password
+		DB:       cfg.RedisConfig.DB,       // Default DB
 	})
 
 	return redisDB

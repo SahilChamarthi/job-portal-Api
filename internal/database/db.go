@@ -1,7 +1,7 @@
 package database
 
 import (
-	"os"
+	"project/config"
 	"project/internal/model"
 
 	"gorm.io/driver/postgres"
@@ -9,10 +9,10 @@ import (
 )
 
 func DataBaseConnect() (*gorm.DB, error) {
-	//cfg := config.GetConfig()
-	//dsn := "host=postgres user=postgres password=admin dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Shanghai"
-	//dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s", cfg.DBConfig.Host, cfg.DBConfig.User, cfg.DBConfig.Password, cfg.DBConfig.DBname, cfg.DBConfig.Port, cfg.DBConfig.SslMode, cfg.DBConfig.TimeZone)
-	dsn := os.Getenv("DB_DSN")
+	cfg := config.GetConfig()
+	dsn := cfg.DBConfig.DB_DSN
+	//dsn := "host=postgres user=postgres password=admin dbname=jobportal01 port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	//dsn := os.Getenv("DB_DSN")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err

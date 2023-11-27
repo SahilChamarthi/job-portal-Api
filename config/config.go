@@ -9,16 +9,10 @@ import (
 var cfg Config
 
 type Config struct {
-	AppConfig AppConfig
-	DBConfig  DBConfig
-}
-
-type AppConfig struct {
-	AppHost      string `env:"app_host"`
-	Port         string `env:"port,required=true"`
-	WriteTimeout uint32 `env:"write_timeout,required=true"`
-	ReadTimeout  uint32 `env:"read_timeout,required=true"`
-	IdleTimeout  uint32 `env:"idle_timeout,required=true"`
+	AppConfig              AppConfig
+	DBConfig               DBConfig
+	RedisConfig            RedisConfig
+	PrivatePublicPemConfig PrivatePublicPemConfig
 }
 
 func init() {
@@ -34,6 +28,25 @@ func GetConfig() Config {
 	return cfg
 }
 
+type AppConfig struct {
+	AppHost      string `env:"app_host"`
+	Port         string `env:"port,required=true"`
+	WriteTimeout uint32 `env:"write_timeout,required=true"`
+	ReadTimeout  uint32 `env:"read_timeout,required=true"`
+	IdleTimeout  uint32 `env:"idle_timeout,required=true"`
+}
+
 type DBConfig struct {
 	DB_DSN string `env:"DB_DSN,required=true"`
+}
+
+type RedisConfig struct {
+	Addr     string `env:"addr,required=true"`
+	Password string `env:"password"`
+	DB       int    `env:"db"`
+}
+
+type PrivatePublicPemConfig struct {
+	PrivatePem string `env:"private_pem,required=true"`
+	PublicPem  string `env:"public_pem,required=true"`
 }
