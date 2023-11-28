@@ -58,14 +58,14 @@ func (h *handler) getAllCompany(c *gin.Context) {
 
 	if !ok {
 		log.Error().Str("traceId", traceId).Msg("trace id not found in handler")
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"msg": http.StatusText(http.StatusInternalServerError)})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": http.StatusText(http.StatusInternalServerError)})
 		return
 	}
 
 	us, err := h.r.GetAllCompanies()
 	if err != nil {
 		log.Error().Err(err).Str("Trace Id", traceId).Msg("get all company problem from db")
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"msg": " could not get all companies"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": http.StatusText(http.StatusInternalServerError)})
 		return
 	}
 	c.JSON(http.StatusOK, us)
@@ -76,22 +76,22 @@ func (h *handler) getCompany(c *gin.Context) {
 
 	ctx := c.Request.Context()
 	traceId, ok := ctx.Value(middlewear.TraceIdKey).(string)
-	id, erro := strconv.Atoi(c.Param("company_id"))
-	if erro != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"msg": http.StatusText(http.StatusBadRequest)})
-		return
-	}
 
 	if !ok {
 		log.Error().Str("traceId", traceId).Msg("trace id not found in handler")
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"msg": http.StatusText(http.StatusInternalServerError)})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": http.StatusText(http.StatusInternalServerError)})
+		return
+	}
+
+	id, erro := strconv.Atoi(c.Param("company_id"))
+	if erro != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": http.StatusText(http.StatusBadRequest)})
 		return
 	}
 
 	us, err := h.r.GetCompanyById(id)
 	if err != nil {
-		log.Error().Err(err).Str("Trace Id", traceId).Msg("get company problem")
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"msg": http.StatusText(http.StatusInternalServerError)})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": http.StatusText(http.StatusInternalServerError)})
 		return
 	}
 	c.JSON(http.StatusOK, us)

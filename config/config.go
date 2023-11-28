@@ -15,7 +15,7 @@ type Config struct {
 	PrivatePublicPemConfig PrivatePublicPemConfig
 }
 
-func init() {
+func iniit() {
 	_, err := env.UnmarshalFromEnviron(&cfg)
 
 	if err != nil {
@@ -25,6 +25,7 @@ func init() {
 }
 
 func GetConfig() Config {
+	iniit()
 	return cfg
 }
 

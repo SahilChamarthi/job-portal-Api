@@ -20,6 +20,7 @@ type handler struct {
 }
 
 func NewHandler(a *auth.Auth, r services.AllinServices) (*handler, error) {
+
 	if r == nil {
 		return nil, errors.New("service implementation not given")
 	}
